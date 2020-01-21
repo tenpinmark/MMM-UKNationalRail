@@ -35,6 +35,7 @@ Module.register("MMM-UKNationalRail", {
         to_offset: '',
         train_status: '',
         type: '',
+        header: 'UK National Rail', // Set the default Module Header
 
         maxResults: 5, //Maximum number of results to display
         showOrigin: false, //Show origin of train
@@ -125,12 +126,61 @@ Module.register("MMM-UKNationalRail", {
         var table = document.createElement("table");
         table.className = "small";
 
-        if (this.trains.stationName !== null) {
-            this.config.header = this.trains.stationName;
+        /*
+        if (user_header == null) {
+            user_header = this.config.header;
         }
 
-        //With data returned
+        if (this.trains.stationName !== null) {
+            // this.config.header = this.trains.stationName
+            this.config.header = this.trains.stationName + " - " + user_header;
+            }
+        */
+        
+    //With data returned
         if (this.trains.data.length > 0) {
+            
+    // I think this is where I can insert the table row headers
+    // Create row for data item
+            var row = document.createElement("tr");
+            table.appendChild(row);
+    // Platform
+            var trainPlatformCell = document.createElement("td");
+            trainPlatformCell.innerHTML = "Platform";
+            trainPlatformCell.className = "platform";
+            row.appendChild(trainPlatformCell);
+    //Train destination cell
+            var trainDestCell = document.createElement("td");
+            trainDestCell.innerHTML = "To";
+            trainDestCell.className = "bright dest";
+            row.appendChild(trainDestCell);
+    //If required train origin cell
+            if (this.config.showOrigin) {
+                var trainOriginCell = document.createElement("td");
+                trainOriginCell.innerHTML = "From";
+                trainOriginCell.className = "trainOrigin";
+                row.appendChild(trainOriginCell);
+            }
+    //Timetabled departure time
+            var plannedDepCell = document.createElement("td");
+            plannedDepCell.innerHTML = "Planned";
+            plannedDepCell.className = "timeTabled";
+            row.appendChild(plannedDepCell);
+    //If required, live departure time
+            if (this.config.showActualDeparture) {
+                var actualDepCell = document.createElement("td");
+                actualDepCell.innerHTML = "Actual";
+                actualDepCell.className = "actualTime";
+                row.appendChild(actualDepCell);
+            }
+    //Train status cell
+                var statusCell = document.createElement("td");
+                statusCell.innerHTML = "Status";
+                statusCell.className = "bright nonews status";
+                row.appendChild(statusCell);
+    
+    // Back to the original code
+    
             for (var t in this.trains.data) {
                 var myTrain = this.trains.data[t];
 
